@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Smart Irrigation System</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shirk-to-fit=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="css/styles.css" rel="stylesheet">
+    
+
+    <!-- firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-database.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#config-web-app -->
+    <script type="text/javascript" src="JavaScript/java_script.js"></script>
+    <script type="text/javascript" src="JavaScript/firebase_setting.js"></script>
+    <script>
+        firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        
+      } else {
+        // No user is signed in.
+        window.open("index.html","_Parent")
+      }
+    });
+        </script>
+	
+</head>
+<body onload="info_load()">
+	<!-- Nav bar start -->
+	<nav class="navbar navbar-dark navbar-expand-sm fixed-top">
+        <div class="container">
+        	<!-- Add Nav bar button for samll device -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Add logo img for webside -->
+            <a class="navbar-brand mr-auto " href="#"><img src="img/logo.png" height="30" width="41"></a>
+            <div class="collapse navbar-collapse" id="Navbar">
+                <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active"><a class="nav-link" href="#"><span class="fa fa-home fa-lg"></span> Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="./about.html"><span class="fa fa-info fa-lg"></span> About</a></li>
+                        <li class="nav-item "><a class="nav-link" href="./contact.html"><span class="fa fa-address-card fa-lg"></span> Contact</a></li>
+                </ul>
+                <div class="dropdown text-white">
+                    <a id="profile_btn2" class="" data-toggle="dropdown">
+                    <span class="fa fa-user-circle" style="font-size:36px"></span>
+                    </a>
+                
+                <div class="dropdown-menu">
+                  <button id="profile_btn" onclick="profile_info()" class="dropdown-item">Profile</button>
+                  <button id="btn_logout" onclick="logout()" type="button" class="dropdown-item">Log out</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+ 	<!-- Nav bar End -->
+
+    <!--Profile Card Modal start -->
+    <div id="profile_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog" role="content">
+            <div class="modal-content">
+                <div class="card">
+                  <div class="card-header bg-info text-center">Profile</div>
+                  <div class="card-body bg-light">Email Id : <span id="User_Email_Id"></span></div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <!--Profile card modal End -->
+	<!-- Header start-->
+	<header class="jumbotron header"> 
+		<div class="container mr-auto">
+			<div class="row text-white row-header">
+				<div class="col-lg-6 col-sm-6">
+					<h1>Smart Irrigation System</h1>
+						<p>Aim is to develop a wireless controlled smart irrigation system to provide irrigation system which is automatic for the plants which help in saving water and money. The main objective is to apply the system for improvement of health of the soil and hence the plant via sensors.</p>
+				</div>
+				<div class="col-lg-6 col-sm-12 align-self-center">
+                    <img src="img/logo.png" class="img-fluid">
+                </div>
+			</div>
+		
+	</header>
+	<!-- Header End -->
+<section>
+	<div class="container">
+        <!-- Wifi Status Strat -->
+        <div class="row text-center mt-2 mb-3 text-white justify-content-center">
+            <div class="col-lg-8 col-sm-12">
+                  <div class="card bg-secondary mb-2">
+                    <div class="card-header bg-dark text-success">
+                       <h1> Wi-fi Status </h1>
+                    </div>
+                    <div class="card-body">
+                        <h6> Host Name : <span id="host_name"></span></h6>
+                    </div>
+                    </div>
+            </div>
+        </div>
+        <!-- Wifi Status End -->
+        <!-- Seen Information Start -->
+        <div class="row row-content text-center mr-auto text-white">
+            <!--Temprature Show start--> 
+            <div class="col-lg-4 col-sm-12 mb-2">
+                  <div class="card bg-danger">
+                    <div class="card-header bg-primary">
+                        <img src="img/temp_logo.png" id="temp_logo">
+                        <h1>Temprature</h1>
+                    </div>
+                    <div class="card-body">
+                        <h1><span id="temp_info"></span> °C</h1>
+                    </div> 
+                    
+                  </div>
+            </div>
+            <!--Temprature Show End --> 
+            <!--Humidity Show start--> 
+            <div class="col-lg-4 col-sm-12 mb-2">
+                  <div class="card bg-warning">
+                    <div class="card-header bg-success">
+                        <img src="img/humidity_logo.png" id="hum_logo">
+                        <h1>Humidity</h1>
+                    </div>
+                    <div class="card-body">
+                        <h1><span id="humidity_info"></span> %</h1>
+                    </div> 
+                    
+                  </div>
+            </div>
+            <!--Humidity Show End --> 
+            <!--Soil Moisture Show start--> 
+            <div class="col-lg-4 col-sm-12">
+                  <div class="card bg-danger">
+                    <div class="card-header bg-secondary">
+                        <img src="img/soil_logo.png" id="soil_logo">
+                        <h1>Soil Moisture</h1>
+                    </div>
+                    <div class="card-body">
+                        <h1><span id="soil_info"></span> %</h1>
+                    </div> 
+                    
+                  </div>
+            </div>
+            <!--Soil Moisture Show End --> 
+        </div>
+        <!-- Seen Information End -->
+        <!-- Motor Status Strat -->
+        <div class="row text-center mt-2 mb-3 text-white justify-content-center">
+            <div class="col-lg-8 col-sm-12">
+                  <div class="card bg-secondary">
+                    <div class="card-header bg-dark text-warning">
+                       <h1> Motor Status </h1>
+                    </div>
+                    <div class="card-body">
+                        <h6><span id="motor_info"></span> <span id="local_motor_info"></span></h6>
+                    </div> 
+                    
+                  </div>
+            </div>
+        </div>
+        <!-- Motor Status End -->
+        <!-- Motor State Strat -->
+        <div class="row text-center mt-2 mb-3 text-white justify-content-center">
+            <div class="col-lg-8 col-sm-12">
+                  <div class="card bg-secondary">
+                    <div class="card-header bg-dark">
+                       <h1>Motor Button</h1>
+                    </div>
+                    <div class="card-body">
+                        <button id="btn_auto" onclick="Motor_Auto()" type="button" class="btn btn-primary btn-lg m-auto mr-lg-5">AUTO</button>
+                        <button id="btn_on" onclick="Motor_On()" type="button" class="btn btn-success btn-lg m-auto mr-lg-5">ON</button>
+                        <button id="btn_off" onclick="Motor_Off()" type="button" class="btn btn-danger btn-lg m-auto">OFF</button>
+                    </div> 
+                    
+                  </div>
+            </div>
+        </div>
+        <!-- Motor State End -->
+	</div>
+</section>	
+<!-- footer start -->
+<footer class="jumbotron footer">
+	<div class="row">
+		<div class="col col-lg-4 col-md-4 col-sm-12 text-center">
+			<h5>Links</h5>
+				<ul class="list-unstyled">
+				  <li><a href="#" class="text-dark">Home</a></li>
+				  <li><a href="./about.html" class="text-dark">About</a></li>
+				  <li><a href="./contact.html" class="text-dark">Contact</a></li>
+				</ul>
+		</div>
+		<div class="col col-lg-4  col-md-4 col-sm-12">
+			<h5>Our Address</h5>
+			<address>
+				Lovely Professional University,<br>
+				Jalandhr-Delhi G. T. Road(NH-1),<br>
+				Phagwara, Punjab(India) - 144411<br>
+				<i class="fa fa-phone fa-lg"></i> : +91 90094 10700<br>
+                <i class="fa fa-phone fa-lg"></i> : +91 98774 42655<br>
+				<p><i class=" fa fa-envelope-o fa-lg"></i> : thakurajaypratapsingh877@gmail.com</p>
+			</address>
+		</div>
+		<div class="col col-lg-4 col-md-4 col-sm-12 align-self-centerlf">
+			<div class="text-center">
+				<a class="btn btn-social-ico btn-google" href="http://google.com">
+					<i class="fa fa-google-plus fa-lg"></i> 
+				</a>
+				<a class="btn btn-social-ico btn-facebook" href="http://www.facebook.com/profile.php?id">
+					<i class=" fa fa-facebook fa-lg"></i>
+				</a>
+				<a class="btn btn-social-ico btn-linkedin" href="http://www.linkedin.com/in/"> 
+					<i class="fa fa-linkedin fa-lg"></i>
+				</a>
+				<a class="btn btn-social-ico btn-twitter" href="http://www.twitter.com/"> 
+					<i class="fa fa-twitter fa-lg"></i>
+				</a>
+				<a class="btn btn-social-ico btn-google" href="http://www.youtube.com/">
+					<i class="fa fa-youtube fa-lg"></i>
+				</a>
+				<a class="btn btn-social-ico btn-google" href="http://mailto:">
+					<i class=" fa fa-envelope-o fa-lg"></i>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="row justify-content-center">
+		<div class="col-auto">
+			<p>© Copyright 2019 Smart Irrigation System</p>
+		</div>
+	</div>
+</footer>
+<!-- footer end-->
+	
+</body>
+</html>
